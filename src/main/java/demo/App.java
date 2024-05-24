@@ -23,7 +23,7 @@ public class App {
         tests.endTest(); // End your test by clearning connections and closing browser
     }
 
-    public static void main(String[] args) throws InterruptedException, MalformedURLException {
-        new App().getGreeting();
-    }
+    // public static void main(String[] args) throws InterruptedException, MalformedURLException {
+    //     new App().getGreeting();
+    // }
 }
