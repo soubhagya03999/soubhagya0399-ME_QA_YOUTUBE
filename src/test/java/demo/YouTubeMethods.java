@@ -3,20 +3,19 @@ package demo;
 import java.time.Duration;
 import java.util.*;
 
-import org.checkerframework.checker.units.qual.s;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class YouTubeMethods {
-    static ChromeDriver driver;
+    static WebDriver driver;
     static String url="https://www.youtube.com/";
     
-    public static void openYouTube(ChromeDriver driver){
+    public static void openYouTube(WebDriver driver){
         try {
             driver.get(url);
         } catch (Exception e) {
@@ -24,7 +23,7 @@ public class YouTubeMethods {
             e.printStackTrace();
         }
     }
-    public static boolean verifyYouTubeURL(ChromeDriver driver){
+    public static boolean verifyYouTubeURL(WebDriver driver){
         try {
             boolean status;
             if (driver.getCurrentUrl().equals(url)) {
@@ -39,7 +38,7 @@ public class YouTubeMethods {
             return false;
         }
     }
-    public static void clickOnAbout(ChromeDriver driver){
+    public static void clickOnAbout(WebDriver driver){
         try {
             WebElement aboutButton=driver.findElement(By.xpath("//a[text()='About']"));
             JavascriptExecutor js = (JavascriptExecutor)driver;
@@ -52,7 +51,7 @@ public class YouTubeMethods {
             e.printStackTrace();
         }
     }
-    public static void printMessageOnAboutPage(ChromeDriver driver){
+    public static void printMessageOnAboutPage(WebDriver driver){
         try {
             WebElement elem1 = driver.findElement(By.xpath("//h1[contains(text(),'About YouTube')]"));
             WebElement elem2 = driver.findElement(By.xpath("//p[contains(text(),'Our mission is to give everyone a voice and show them the world.')]"));
@@ -66,7 +65,7 @@ public class YouTubeMethods {
         }
     }
 
-    public static void scrollToTheExtremeRight(ChromeDriver driver,String selection){
+    public static void scrollToTheExtremeRight(WebDriver driver,String selection){
         try {
             if (selection.equalsIgnoreCase("Movies") || selection.equalsIgnoreCase("film")) {
                 WebElement nextButton = driver.findElement(By.xpath("//button[@aria-label='Next']"));
@@ -91,7 +90,7 @@ public class YouTubeMethods {
         }
     }
 
-    public static void selectTheExploreTabs(ChromeDriver driver,String tab){
+    public static void selectTheExploreTabs(WebDriver driver,String tab){
     try {
         WebElement Exploretab = driver.findElement(By.xpath("//yt-formatted-string[text()='"+tab+"']"));
         Exploretab.click();
@@ -101,10 +100,10 @@ public class YouTubeMethods {
         e.printStackTrace();
     }
     }
-    public static boolean verifyMovieMarkedForMature(ChromeDriver driver,String mark){
+    public static boolean verifyMovieMarkedForMature(WebDriver driver,String mark){
         try {
             boolean status;
-            WebElement sign = driver.findElement(By.xpath("(//p[text()='"+mark+"'])[3]"));
+            WebElement sign = driver.findElement(By.xpath("(//ytd-grid-movie-renderer[contains(@class,'-list-renderer')])[16]//p[text()='"+mark+"']"));
             if (sign.getText().contains(mark)) {
                 status=true;
             }else{
@@ -117,7 +116,7 @@ public class YouTubeMethods {
             return false;
         }
     }
-    public static boolean verifyMovieTypesWithORCondition(ChromeDriver driver,String type1,String type2){
+    public static boolean verifyMovieTypesWithORCondition(WebDriver driver,String type1,String type2){
         try {
             boolean status;
             WebElement t1=driver.findElement(By.xpath("(//span[contains(text(),'"+type1+"')])[3]"));
@@ -145,7 +144,7 @@ public class YouTubeMethods {
         }
     }
 
-    public static void printPlaylistOfMusicFirstSectionExtreamRight(ChromeDriver driver){
+    public static void printPlaylistOfMusicFirstSectionExtreamRight(WebDriver driver){
         try {
             WebElement playlist = driver.findElement(By.xpath("(//h3[contains(@class,'compact-station-renderer')])[11]"));
             System.out.println("1.Print the name of the playlist:"+playlist.getText());
@@ -154,7 +153,7 @@ public class YouTubeMethods {
         }
     }
 
-    public static boolean verifyTracksListedIsLessThanOrEqualToTheSpecificNumberForMusicFirstSectionExtreamRight(ChromeDriver driver,int count){
+    public static boolean verifyTracksListedIsLessThanOrEqualToTheSpecificNumberForMusicFirstSectionExtreamRight(WebDriver driver,int count){
         try {
             boolean status;
             WebElement music = driver.findElement(By.xpath("(//p[@id='video-count-text'])[11]"));
@@ -171,7 +170,7 @@ public class YouTubeMethods {
             return false;
         }
     }
-    public static void printTheTitleAndBodyOfLatestNewsPostsOfFirstThree(ChromeDriver driver,int count){
+    public static void printTheTitleAndBodyOfLatestNewsPostsOfFirstThree(WebDriver driver,int count){
         try {
             WebElement elem = driver.findElement(By.xpath("//span[text()='Latest news posts']"));
             JavascriptExecutor js =(JavascriptExecutor)driver;
@@ -203,7 +202,7 @@ public class YouTubeMethods {
             e.printStackTrace();
         }
     }
-    public static void sumOfNumberOfLikesOnNumberOfNewsOnLatestNewsPosts(ChromeDriver driver,int count){
+    public static void sumOfNumberOfLikesOnNumberOfNewsOnLatestNewsPosts(WebDriver driver,int count){
         try {
             List<WebElement> l1=driver.findElements(By.xpath("//span[@id='vote-count-middle']"));
             int size =1;
@@ -225,7 +224,7 @@ public class YouTubeMethods {
             e.printStackTrace();
         }
     }
-    public static void searchAndKeepScrollingTillTheSumOfEachVideoViewsReachTheLimit(ChromeDriver driver,String searchKeyword,double limit){
+    public static void searchAndKeepScrollingTillTheSumOfEachVideoViewsReachTheLimit(WebDriver driver,String searchKeyword,double limit){
         WebElement searchb = driver.findElement(By.xpath("//input[@id='search']"));
         WebElement searchc =driver.findElement(By.xpath("(//button[@aria-label='Search'])[1]"));
         WrapperMethods.advanceSearch(searchKeyword, searchb, searchc);
@@ -247,8 +246,8 @@ public class YouTubeMethods {
             if (arr[0].contains("K")) {
                 String[] arr1= arr[0].split("K");
                 double value = Double.parseDouble(arr1[0]);
-                double crore = value * 1000;
-                sum = sum + crore;
+                double thousand = value * 1000;
+                sum = sum + thousand;
                 if (sum>=limit) {
                     break;
                 }

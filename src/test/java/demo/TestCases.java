@@ -1,8 +1,12 @@
 package demo;
 
+import java.io.File;
 import java.time.Duration;
 
-import org.openqa.selenium.By;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
@@ -11,7 +15,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 public class TestCases {
-    static ChromeDriver driver;
+    static WebDriver driver;
 
     @BeforeSuite(alwaysRun = true)
     public static void openBrowser(){
@@ -50,7 +54,7 @@ public class TestCases {
             //STEP-04:create the instance of soft assert
             SoftAssert softAssert = new SoftAssert();
             //STEP-05:verify the movie marked as A or not
-            softAssert.assertTrue(YouTubeMethods.verifyMovieMarkedForMature(driver, "A"));
+            softAssert.assertTrue(YouTubeMethods.verifyMovieMarkedForMature(driver, "U"));
             //STEP-06:verify the movie types
             softAssert.assertTrue(YouTubeMethods.verifyMovieTypesWithORCondition(driver, "Comedy", "Animation"));
             //STEP-07:final check with assert with all the conditions
@@ -117,5 +121,34 @@ public class TestCases {
     @AfterSuite(alwaysRun = true)
     public static void closeBrowser(){
        driver.quit(); 
+    }
+
+    public static void takeScreenShotMethod(WebDriver driver) {
+        try {
+            File theDir = new File(System.getProperty("user.dir")+"\\src\\Screenshot");
+            if (!theDir.exists()) {
+                System.out.println("New Screenshot File Initiated");
+                theDir.mkdir();
+            }
+            File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            File destFile = new File(System.getProperty("user.dir")+"\\src\\Screenshot\\"+System.currentTimeMillis()+".png");
+            FileUtils.copyFile(srcFile, destFile);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeScreenshotFile(){
+        try {
+            File theDir = new File(System.getProperty("user.dir")+"\\src\\Screenshot");
+            if (theDir.exists()) {
+                System.out.println("Existing Screenshot File Removed");
+                FileUtils.deleteDirectory(theDir);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
     }
 }

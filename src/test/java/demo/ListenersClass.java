@@ -5,11 +5,18 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class ListenersClass implements ITestListener{
+
+    @Override
+    public void onStart(ITestContext context) {
+        TestCases.removeScreenshotFile();
+    }
+
     @Override
     public void onTestStart(ITestResult result) {
         System.out.println("************************************************************************************************************");
         System.out.println("TestCase Start : "+result.getName());
         System.out.println("************************************************************************************************************");
+        TestCases.takeScreenShotMethod(TestCases.driver);
     }
 
     @Override
